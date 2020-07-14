@@ -1,5 +1,29 @@
 # ishortenthings
 
+## Local Development
+```
+# Create Virtual Env
+python -m venv venv
+. venv/bin/activate
+pip install -r dev_reqs.txt
+./bootstrap_local_dynamodb.sh
+./start_local_api
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
 - hello_world - Code for the application's Lambda function.

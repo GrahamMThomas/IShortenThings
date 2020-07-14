@@ -1,0 +1,3 @@
+docker network create sam-ishortenthings
+docker run -d -v "$PWD":/dynamodb_local_db -p 8000:8000 --network sam-ishortenthings --name dynamodb cnadiminti/dynamodb-local
+aws dynamodb create-table --endpoint-url http://localhost:8000 --table-name Redirects --attribute-definitions AttributeName=redirect_id,AttributeType=S --key-schema AttributeName=redirect_id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
