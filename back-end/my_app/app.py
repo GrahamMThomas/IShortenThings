@@ -1,11 +1,11 @@
 import json
-
-# import requests
-
 import boto3
-
+import re
 import random
 import string
+from validations import is_url
+from canned_responses import bad_request
+from exception_handler import handle_exceptions
 
 REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table(
     "Redirects"
@@ -13,6 +13,7 @@ REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000"
 REDIRECT_ID_LEN = 8
 
 
+@handle_exceptions
 def lambda_handler(event, context):
     """Sample pure Lambda function
 
@@ -34,8 +35,20 @@ def lambda_handler(event, context):
 
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
+    path = event["pathParameters"]["proxy"]
+    body = json.loads(event["body"])
 
-    create_redirect("google.com")
+    if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
+        url = body.get("url")
+        if is_url(url):
+
+            redirect_id = create_redirect(url)
+            return {
+                "statusCode": 200,
+                "body": json.dumps({"redirect_id": redirect_id}),
+            }
+        else:
+            return bad_request(["url"])
 
     return {
         "statusCode": 200,
