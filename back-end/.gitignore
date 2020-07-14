@@ -3,6 +3,7 @@
 
 .vscode
 shared-local-instance.db
+.env
 ### Linux ###
 *~
 
