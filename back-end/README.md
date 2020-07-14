@@ -6,6 +6,7 @@
 python -m venv venv
 . venv/bin/activate
 pip install -r dev_reqs.txt
+sam build --use-container
 ./bootstrap_local_dynamodb.sh
 ./start_local_api
 ```

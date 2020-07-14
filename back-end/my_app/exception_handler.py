@@ -9,10 +9,10 @@ def handle_exceptions(func):
             print(output)
             return output
         except Exception as e:
-            traceback.print_exc(e)
+            traceback.print_exc()
             return {
                 "statusCode": 500,
-                "body": json.dumps({"message": e,}),
+                "body": json.dumps({"message": str(e),}),
             }
 
     return wrapper

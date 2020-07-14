@@ -1,15 +1,15 @@
 import json
+import simplejson
+
 import boto3
 import re
 import random
 import string
 from validations import is_url
-from canned_responses import bad_request
+from canned_responses import bad_request, NOT_FOUND
 from exception_handler import handle_exceptions
 
-REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table(
-    "Redirects"
-)
+REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table("Redirects")
 REDIRECT_ID_LEN = 8
 
 
@@ -36,8 +36,22 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
     path = event["pathParameters"]["proxy"]
-    body = json.loads(event["body"])
+    body = json.loads(event.get("body") if event.get("body") else "{}")
 
+    # GET /<Alphanumeric>
+    if re.match(rf"^[a-zA-Z0-9]{{{REDIRECT_ID_LEN},}}$", path) and event["httpMethod"] == "GET":
+        redirect_id = re.match(rf"^([a-zA-Z0-9]{{{REDIRECT_ID_LEN},}})$", path).group(1)
+        requested_redirect = REDIRECTS_TABLE.get_item(Key={"redirect_id": redirect_id}).get("Item")
+        if requested_redirect:
+            return {
+                "statusCode": 200,
+                # Normal json library doesn't play nice with Decimals
+                "body": simplejson.dumps({"redirect": requested_redirect}),
+            }
+        else:
+            return NOT_FOUND
+
+    # POST /redirects
     if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
         url = body.get("url")
         if is_url(url):
@@ -50,10 +64,15 @@ def lambda_handler(event, context):
         else:
             return bad_request(["url"])
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"message": "hello world",}),
-    }
+    return NOT_FOUND
+
+
+# https://stackoverflow.com/questions/1960516/python-json-serialize-a-decimal-object
+class DecimalEncoder(json.JSONEncoder):
+    def _iterencode(self, o, markers=None):
+        if isinstance(o, decimal.Decimal):
+            return (str(o) for o in [o])
+        return super(DecimalEncoder, self)._iterencode(o, markers)
 
 
 def create_redirect(url, uses_left=10, user_token="None", can_rickroll=False):
@@ -82,7 +101,5 @@ def create_redirect(url, uses_left=10, user_token="None", can_rickroll=False):
 
 def generate_redirect_id():
     letters_and_digits = string.ascii_letters + string.digits
-    result_str = "".join(
-        (random.choice(letters_and_digits) for i in range(REDIRECT_ID_LEN))
-    )
+    result_str = "".join((random.choice(letters_and_digits) for i in range(REDIRECT_ID_LEN)))
     return result_str
