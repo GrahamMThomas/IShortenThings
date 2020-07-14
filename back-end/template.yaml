@@ -8,15 +8,15 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 15
 
 Resources:
   IShortenThingsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello_world/
+      CodeUri: my_app/
       Handler: app.lambda_handler
-      Runtime: python3.7
+      Runtime: python3.8
       Events:
         IShortenThings:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -25,22 +25,28 @@ Resources:
             Method: get
 
   RedirectTable:
-    Type: AWS::DynamoDB::Table
+    Type: AWS::Serverless::SimpleTable
     Properties:
       TableName: "Redirects"
-      AttributeDefinitions:
-        - AttributeName: "RedirectId"
-          AttributeType: "S"
-        - AttributeName: "UsesLeft"
-          AttributeType: "N"
-        - AttributeName: "CanRickRoll"
-          AttributeType: "B"
-        - AttributeName: "UserToken"
-          AttributeType: "S"
-      KeySchema:
-        - AttributeName: "RedirectId"
-          KeyType: "HASH"
-      BillingMode: "PAY_PER_REQUEST"
+      PrimaryKey: 
+        Name: "redirect_id"
+        Type: "String"
+    # Type: AWS::DynamoDB::Table
+    # Properties:
+    #   TableName: "Redirects"
+    #   AttributeDefinitions:
+    #     - AttributeName: "RedirectId"
+    #       AttributeType: "S"
+    #     - AttributeName: "UsesLeft"
+    #       AttributeType: "N"
+    #     - AttributeName: "CanRickRoll"
+    #       AttributeType: "B"
+    #     - AttributeName: "UserToken"
+    #       AttributeType: "S"
+    #   KeySchema:
+    #     - AttributeName: "RedirectId"
+    #       KeyType: "HASH"
+    #   BillingMode: "PAY_PER_REQUEST"
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
