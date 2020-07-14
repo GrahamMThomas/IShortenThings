@@ -2,6 +2,16 @@ import json
 
 # import requests
 
+import boto3
+
+import random
+import string
+
+REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table(
+    "Redirects"
+)
+REDIRECT_ID_LEN = 8
+
 
 def lambda_handler(event, context):
     """Sample pure Lambda function
@@ -25,18 +35,41 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
 
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    create_redirect("google.com")
 
     return {
         "statusCode": 200,
-        "body": json.dumps({
-            "message": "hello world",
-            # "location": ip.text.replace("\n", "")
-        }),
+        "body": json.dumps({"message": "hello world",}),
     }
+
+
+def create_redirect(url, uses_left=10, user_token="None", can_rickroll=False):
+    """Creates a redirect entry
+
+    Args:
+        url (string): url to redirect to
+        uses_left (int, optional): How many uses remaining on redirect. Defaults to 10.
+        user_token (str, optional): Which users owns this redirect. Defaults to "None".
+        can_rickroll (bool, optional): Does this redirect have a chance to rickroll you? Defaults to False.
+
+    Returns:
+        string: redirect_id of length REDIRECT_ID_LEN
+    """
+    redirect_id = generate_redirect_id()
+    REDIRECTS_TABLE.put_item(
+        Item={
+            "redirect_id": redirect_id,
+            "uses_left": uses_left,
+            "user_token": user_token,
+            "can_rickroll": can_rickroll,
+        }
+    )
+    return redirect_id
+
+
+def generate_redirect_id():
+    letters_and_digits = string.ascii_letters + string.digits
+    result_str = "".join(
+        (random.choice(letters_and_digits) for i in range(REDIRECT_ID_LEN))
+    )
+    return result_str
