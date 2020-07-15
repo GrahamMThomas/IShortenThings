@@ -39,19 +39,21 @@ def lambda_handler(event, context):
     """
     path = event["pathParameters"]["proxy"]
     body = json.loads(event.get("body") if event.get("body") else "{}")
+    query_params = event.get("queryStringParameters")
 
     # GET /<Alphanumeric>
     if re.match(rf"^[a-zA-Z0-9]{{{REDIRECT_ID_LEN},}}$", path) and event["httpMethod"] == "GET":
         redirect_id = re.match(rf"^([a-zA-Z0-9]{{{REDIRECT_ID_LEN},}})$", path).group(1)
         requested_redirect = REDIRECTS_TABLE.get_item(Key={"redirect_id": redirect_id}).get("Item")
-        if requested_redirect:
-            return {
-                "statusCode": 200,
-                # Normal json library doesn't play nice with Decimals
-                "body": simplejson.dumps({"redirect": requested_redirect}),
-            }
-        else:
-            return NOT_FOUND
+
+        if requested_redirect and query_params.get("use") == "true":
+            print("remove a use")
+        # @todo Currently returning 200 no matter what. Not sure if I like this as it's not too clear
+        return {
+            "statusCode": 200,
+            # Normal json library doesn't play nice with Decimals
+            "body": simplejson.dumps({"redirect": requested_redirect}),
+        }
 
     # POST /redirects
     if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
@@ -97,6 +99,7 @@ def create_redirect(url, uses_left=10, user_token="None", can_rickroll=False):
             "uses_left": uses_left,
             "user_token": user_token,
             "can_rickroll": can_rickroll,
+            "url": url,
         }
     )
     return redirect_id
