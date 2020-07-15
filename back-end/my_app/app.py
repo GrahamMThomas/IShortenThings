@@ -8,12 +8,14 @@ import string
 from validations import is_url
 from canned_responses import bad_request, NOT_FOUND
 from exception_handler import handle_exceptions
+from cors import add_cors
 
 REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table("Redirects")
 REDIRECT_ID_LEN = 8
 
 
 @handle_exceptions
+@add_cors
 def lambda_handler(event, context):
     """Sample pure Lambda function
 
@@ -53,6 +55,7 @@ def lambda_handler(event, context):
 
     # POST /redirects
     if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
+        print(body)
         url = body.get("url")
         if is_url(url):
 

@@ -1,1 +1,2 @@
-sam local start-api --docker-network sam-ishortenthings
+sam build --use-container
+sam local start-api -p 3001 --docker-network sam-ishortenthings
