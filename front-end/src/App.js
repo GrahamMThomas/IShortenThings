@@ -38,11 +38,12 @@ const styles = (theme) => ({
 const App = (props) => {
   const { classes } = props;
   const [newRedirect, setNewRedirect] = useState(null);
-  const [userUrl, setUserUrl] = useState(null);
+  const [userUrl, setUserUrl] = useState('');
 
   const handleButtonSubmit = () => {
     CreateRedirect(userUrl).then((res) => {
-      setNewRedirect(API_ENDPOINT + res.data.redirect_id);
+      setNewRedirect(window.location.href + res.data.redirect_id);
+      setUserUrl('')
     });
   };
 
