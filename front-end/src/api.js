@@ -13,7 +13,7 @@ const CreateRedirect = async (url) => {
 const UseRedirect = async (redirect_id) => {
   return await axios({
     method: "get",
-    url: API_ENDPOINT + redirect_id + "?use=true",
+    url: API_ENDPOINT + "redirects/" + redirect_id + "?use=true",
   });
 };
 
