@@ -3,15 +3,14 @@ import simplejson
 
 import boto3
 import re
-import random
-import string
+
 from validations import is_url
 from canned_responses import bad_request, NOT_FOUND
 from exception_handler import handle_exceptions
 from cors import add_cors
+from redirect import Redirect, REDIRECT_ID_LEN
 
 REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table("Redirects")
-REDIRECT_ID_LEN = 8
 
 
 @handle_exceptions
@@ -41,27 +40,29 @@ def lambda_handler(event, context):
     body = json.loads(event.get("body") if event.get("body") else "{}")
     query_params = event.get("queryStringParameters")
 
-    # GET /<Alphanumeric>
-    if re.match(rf"^[a-zA-Z0-9]{{{REDIRECT_ID_LEN},}}$", path) and event["httpMethod"] == "GET":
-        redirect_id = re.match(rf"^([a-zA-Z0-9]{{{REDIRECT_ID_LEN},}})$", path).group(1)
-        requested_redirect = REDIRECTS_TABLE.get_item(Key={"redirect_id": redirect_id}).get("Item")
+    # GET /redirects/<Alphanumeric>
+    regex = rf"^redirects/([a-zA-Z0-9]{{{REDIRECT_ID_LEN},}})$"
+    if re.match(regex, path) and event["httpMethod"] == "GET":
+        redirect_id = re.match(regex, path).group(1)
+        requested_redirect = Redirect(REDIRECTS_TABLE, redirect_id)
 
-        if requested_redirect and query_params.get("use") == "true":
-            print("remove a use")
-        # @todo Currently returning 200 no matter what. Not sure if I like this as it's not too clear
+        if not requested_redirect.exists():
+            return NOT_FOUND
+
+        if query_params.get("use") == "true":
+            requested_redirect.spend_a_use()
+
         return {
             "statusCode": 200,
-            # Normal json library doesn't play nice with Decimals
-            "body": simplejson.dumps({"redirect": requested_redirect}),
+            "body": simplejson.dumps({"redirect": requested_redirect.item}),
         }
 
     # POST /redirects
     if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
-        print(body)
         url = body.get("url")
         if is_url(url):
 
-            redirect_id = create_redirect(url)
+            redirect_id = Redirect.create_redirect(REDIRECTS_TABLE, url)
             return {
                 "statusCode": 200,
                 "body": json.dumps({"redirect_id": redirect_id}),
@@ -71,41 +72,3 @@ def lambda_handler(event, context):
 
     return NOT_FOUND
 
-
-# https://stackoverflow.com/questions/1960516/python-json-serialize-a-decimal-object
-class DecimalEncoder(json.JSONEncoder):
-    def _iterencode(self, o, markers=None):
-        if isinstance(o, decimal.Decimal):
-            return (str(o) for o in [o])
-        return super(DecimalEncoder, self)._iterencode(o, markers)
-
-
-def create_redirect(url, uses_left=10, user_token="None", can_rickroll=False):
-    """Creates a redirect entry
-
-    Args:
-        url (string): url to redirect to
-        uses_left (int, optional): How many uses remaining on redirect. Defaults to 10.
-        user_token (str, optional): Which users owns this redirect. Defaults to "None".
-        can_rickroll (bool, optional): Does this redirect have a chance to rickroll you? Defaults to False.
-
-    Returns:
-        string: redirect_id of length REDIRECT_ID_LEN
-    """
-    redirect_id = generate_redirect_id()
-    REDIRECTS_TABLE.put_item(
-        Item={
-            "redirect_id": redirect_id,
-            "uses_left": uses_left,
-            "user_token": user_token,
-            "can_rickroll": can_rickroll,
-            "url": url,
-        }
-    )
-    return redirect_id
-
-
-def generate_redirect_id():
-    letters_and_digits = string.ascii_letters + string.digits
-    result_str = "".join((random.choice(letters_and_digits) for i in range(REDIRECT_ID_LEN)))
-    return result_str
