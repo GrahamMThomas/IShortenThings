@@ -16,6 +16,7 @@
 .App-header {
   background-image: url("assets/images/minion-wallpaper.jpg");
   background-size: cover;
+  background-position: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

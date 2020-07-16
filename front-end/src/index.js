@@ -14,9 +14,7 @@ ReactDOM.render(
           <Route exact path="/">
             <App />
           </Route>
-          <Route exact path="/not-found">
-            <NotFoundPage />
-          </Route>
+          <Route exact path="/not-found" component={NotFoundPage}></Route>
           <Route
             string
             path="/:redirect_id([a-zA-Z1-9]{8,})"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { UseRedirect } from "./api";
-import NotFoundPage from "./404";
 import { Redirect } from "react-router-dom";
 
 const RedirectComponent = (props) => {
