@@ -3,6 +3,7 @@ import { Paper, TextField, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { CreateRedirect } from "../../../utils/api";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = (theme) => ({
   title: {
@@ -24,7 +25,6 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   submitButton: {
-    marginTop: theme.spacing(4),
     backgroundColor: "#FFF72B",
   },
 });
@@ -32,11 +32,14 @@ const styles = (theme) => ({
 const RedirectForm = (props) => {
   const { classes, setNewRedirect } = props;
   const [userUrl, setUserUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleButtonSubmit = () => {
+    setLoading(true);
     CreateRedirect(userUrl).then((res) => {
       setNewRedirect(window.location.href + res.data.redirect_id);
       setUserUrl("");
+      setLoading(false);
     });
   };
 
@@ -46,19 +49,29 @@ const RedirectForm = (props) => {
         <TextField
           label="Url to shorten"
           onChange={(e) => setUserUrl(e.target.value)}
+          disabled={loading}
         />
         <Button variant="contained" className={classes.settingsButton}>
           <SettingsIcon style={{ color: "#FFF72B" }} />
         </Button>
       </div>
-      <Button
-        className={classes.submitButton}
-        variant="contained"
-        size="large"
-        onClick={handleButtonSubmit}
+      <div
+        className={classes.center}
+        style={{ marginTop: "32px", marginLeft: "64px" }}
       >
-        Shorten Me!
-      </Button>
+        <Button
+          className={classes.submitButton}
+          variant="contained"
+          size="large"
+          onClick={handleButtonSubmit}
+          disabled={loading}
+        >
+          Shorten Me!
+        </Button>
+        <CircularProgress
+          style={{ marginLeft: "24px", opacity: loading ? "100" : "0" }}
+        />
+      </div>
     </Paper>
   );
 };

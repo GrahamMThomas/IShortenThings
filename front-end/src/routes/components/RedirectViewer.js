@@ -10,7 +10,7 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   redirectBox: {
-    padding: theme.spacing(4),
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px`,
     marginTop: theme.spacing(2),
   },
   redirectText: {
