@@ -20,8 +20,11 @@ const styles = (theme) => ({
     color: "#807E81",
     marginTop: theme.spacing(8),
   },
+  formPaper: {
+    padding: theme.spacing(2),
+  },
   settingsButton: {
-    backgroundColor: "#FFF72B",
+    backgroundColor: "#807E81",
     marginLeft: theme.spacing(4),
   },
   center: {
@@ -33,17 +36,25 @@ const styles = (theme) => ({
     marginTop: theme.spacing(4),
     backgroundColor: "#FFF72B",
   },
+  redirectBox: {
+    padding: theme.spacing(4),
+    marginTop: theme.spacing(2),
+  },
+  redirectText: {
+    fontFamily: "courier",
+    color: "#807E81",
+  },
 });
 
 const App = (props) => {
   const { classes } = props;
   const [newRedirect, setNewRedirect] = useState(null);
-  const [userUrl, setUserUrl] = useState('');
+  const [userUrl, setUserUrl] = useState("");
 
   const handleButtonSubmit = () => {
     CreateRedirect(userUrl).then((res) => {
       setNewRedirect(window.location.href + res.data.redirect_id);
-      setUserUrl('')
+      setUserUrl("");
     });
   };
 
@@ -51,23 +62,34 @@ const App = (props) => {
     <div className="App">
       <header className="App-header">
         <Typography className={classes.title}> I Shorten Things</Typography>
-        <div className={classes.center} style={{ marginLeft: "32px" }}>
-          <Paper>
-            <TextField label="Url to shorten" variant="outlined" onChange={(e) => setUserUrl(e.target.value)} />
+        <Paper className={classes.formPaper}>
+          <div className={classes.center} style={{ marginLeft: "32px" }}>
+            <TextField
+              label="Url to shorten"
+              onChange={(e) => setUserUrl(e.target.value)}
+            />
+            <Button variant="contained" className={classes.settingsButton}>
+              <SettingsIcon style={{ color: "#FFF72B" }} />
+            </Button>
+          </div>
+          <Button
+            className={classes.submitButton}
+            variant="contained"
+            size="large"
+            onClick={handleButtonSubmit}
+          >
+            Shorten Me!
+          </Button>
+        </Paper>
+        {newRedirect ? (
+          <Paper className={classes.redirectBox}>
+            <Typography className={classes.redirectText}>
+              {newRedirect || ""}
+            </Typography>
           </Paper>
-          <IconButton variant="contained" className={classes.settingsButton}>
-            <SettingsIcon />
-          </IconButton>
-        </div>
-        <Button
-          className={classes.submitButton}
-          variant="contained"
-          size="large"
-          onClick={handleButtonSubmit}
-        >
-          Shorten Me!
-        </Button>
-        <Typography>{newRedirect || ""}</Typography>
+        ) : (
+          ""
+        )}
       </header>
     </div>
   );
