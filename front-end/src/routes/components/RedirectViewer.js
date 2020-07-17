@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Paper, Typography, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const styles = (theme) => ({
   center: {
@@ -21,17 +23,33 @@ const styles = (theme) => ({
 
 const RedirectViewer = (props) => {
   const { classes, url } = props;
+  const [initiateCopy, setInitiateCopy] = useState(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    setInitiateCopy(true);
+  };
+
+  const handleClose = () => {
+    setInitiateCopy(false);
+  };
+
   return (
     <Paper className={`${classes.redirectBox} ${classes.center}`}>
       <Typography className={classes.redirectText}>{url || ""}</Typography>
-      <IconButton
-        onClick={() => {
-          navigator.clipboard.writeText(url);
-        }}
-        style={{ marginLeft: "16px" }}
-      >
+      <IconButton onClick={copyToClipboard} style={{ marginLeft: "16px" }}>
         <AssignmentIcon />
       </IconButton>
+
+      <Snackbar
+        open={initiateCopy}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success">
+          Link copied to clipboard!
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 };

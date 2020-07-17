@@ -32,10 +32,9 @@ const styles = (theme) => ({
 });
 
 const RedirectForm = (props) => {
-  const { classes, setNewRedirect } = props;
+  const { classes, setNewRedirect, setError } = props;
   const [userUrl, setUserUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [validationError, setValidationError] = useState(null);
 
   const handleButtonSubmit = () => {
