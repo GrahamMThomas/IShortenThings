@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./index.css";
-import App from "./App";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import RedirectComponent from "./Redirect";
-import NotFoundPage from "./404";
+import NotFoundPage from "./routes/404";
+import App from "./routes/App";
+import RedirectComponent from "./routes/Redirect";
 
 ReactDOM.render(
   <React.StrictMode>

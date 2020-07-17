@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { UseRedirect } from "./api";
+import { UseRedirect } from "../utils/api";
 import { Redirect } from "react-router-dom";
 
 const RedirectComponent = (props) => {

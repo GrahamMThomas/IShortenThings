@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Minion404 from "./assets/images/minion-404.jpg";
+import Minion404 from "../assets/images/minion-404.jpg";
 import { Button } from "@material-ui/core";
 
 const styles = (theme) => ({

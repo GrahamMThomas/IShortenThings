@@ -11,8 +11,8 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { CreateRedirect, API_ENDPOINT } from "./api";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+import { CreateRedirect, API_ENDPOINT } from "../utils/api";
+import RedirectViewer from "./components/RedirectViewer";
 
 const styles = (theme) => ({
   title: {
@@ -37,14 +37,6 @@ const styles = (theme) => ({
     marginTop: theme.spacing(4),
     backgroundColor: "#FFF72B",
   },
-  redirectBox: {
-    padding: theme.spacing(4),
-    marginTop: theme.spacing(2),
-  },
-  redirectText: {
-    fontFamily: "courier",
-    color: "#807E81",
-  },
 });
 
 const App = (props) => {
@@ -63,6 +55,7 @@ const App = (props) => {
     <div className="App">
       <header className="App-header">
         <Typography className={classes.title}> I Shorten Things</Typography>
+
         <Paper className={classes.formPaper}>
           <div className={classes.center} style={{ marginLeft: "32px" }}>
             <TextField
@@ -83,24 +76,7 @@ const App = (props) => {
           </Button>
         </Paper>
 
-        {/* Outcome */}
-        {newRedirect ? (
-          <Paper className={`${classes.redirectBox} ${classes.center}`}>
-            <Typography className={classes.redirectText}>
-              {newRedirect || ""}
-            </Typography>
-            <IconButton
-              onClick={() => {
-                navigator.clipboard.writeText(newRedirect);
-              }}
-              style={{ marginLeft: "16px" }}
-            >
-              <AssignmentIcon />
-            </IconButton>
-          </Paper>
-        ) : (
-          ""
-        )}
+        {newRedirect ? <RedirectViewer url={newRedirect} /> : null}
       </header>
     </div>
   );
