@@ -26,7 +26,8 @@ const styles = (theme) => ({
     justifyContent: "center",
   },
   submitButton: {
-    backgroundColor: "#FFF72B",
+    backgroundColor: "#807E81",
+    color: "#FFF72B",
   },
 });
 
@@ -96,6 +97,7 @@ const RedirectForm = (props) => {
         >
           Shorten Me!
         </Button>
+
         <CircularProgress
           style={{ marginLeft: "24px", opacity: loading ? "100" : "0" }}
         />
