@@ -12,6 +12,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { CreateRedirect, API_ENDPOINT } from "./api";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 const styles = (theme) => ({
   title: {
@@ -81,11 +82,21 @@ const App = (props) => {
             Shorten Me!
           </Button>
         </Paper>
+
+        {/* Outcome */}
         {newRedirect ? (
-          <Paper className={classes.redirectBox}>
+          <Paper className={`${classes.redirectBox} ${classes.center}`}>
             <Typography className={classes.redirectText}>
               {newRedirect || ""}
             </Typography>
+            <IconButton
+              onClick={() => {
+                navigator.clipboard.writeText(newRedirect);
+              }}
+              style={{ marginLeft: "16px" }}
+            >
+              <AssignmentIcon />
+            </IconButton>
           </Paper>
         ) : (
           ""
