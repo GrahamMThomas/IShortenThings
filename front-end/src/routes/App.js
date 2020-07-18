@@ -38,7 +38,11 @@ const App = (props) => {
           autoHideDuration={3000}
           onClose={handleErrorClose}
         >
-          <Alert onClose={handleErrorClose} severity="error">
+          <Alert
+            onClose={handleErrorClose}
+            data-testid="errorAlert"
+            severity="error"
+          >
             Internal Server Error
           </Alert>
         </Snackbar>

@@ -5,6 +5,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { CreateRedirect } from "../../../utils/api";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { validURL } from "./validations";
+import CustomizeMenu from "./components/CustomizeMenu/CustomizeMenu";
 
 const styles = (theme) => ({
   title: {
@@ -68,6 +69,7 @@ const RedirectForm = (props) => {
   };
 
   return (
+    // TODO Potentially split into multiple components
     <Paper className={classes.formPaper}>
       <div className={classes.center} style={{ marginLeft: "24px" }}>
         <TextField
@@ -77,11 +79,15 @@ const RedirectForm = (props) => {
           disabled={loading}
           helperText={validationError || "ex. https://intuit.com"}
           style={{ minWidth: "300px" }}
+          value={userUrl}
+          inputProps={{ "data-testid": "urlTextField" }}
         />
         <Button variant="contained" className={classes.settingsButton}>
           <SettingsIcon style={{ color: "#FFF72B" }} />
         </Button>
       </div>
+
+      <CustomizeMenu />
 
       <div
         className={classes.center}
@@ -93,6 +99,7 @@ const RedirectForm = (props) => {
           size="large"
           onClick={handleButtonSubmit}
           disabled={loading}
+          data-testid="submitButton"
         >
           Shorten Me!
         </Button>

@@ -36,7 +36,9 @@ const RedirectViewer = (props) => {
 
   return (
     <Paper className={`${classes.redirectBox} ${classes.center}`}>
-      <Typography className={classes.redirectText}>{url || ""}</Typography>
+      <Typography data-testid="linkTypography" className={classes.redirectText}>
+        {url || ""}
+      </Typography>
       <IconButton onClick={copyToClipboard} style={{ marginLeft: "16px" }}>
         <AssignmentIcon />
       </IconButton>
@@ -46,7 +48,11 @@ const RedirectViewer = (props) => {
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="success">
+        <Alert
+          onClose={handleClose}
+          data-testid="copyInfoAlert"
+          severity="success"
+        >
           Link copied to clipboard!
         </Alert>
       </Snackbar>
