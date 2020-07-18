@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import RedirectViewer from "./components/RedirectViewer";
+import RedirectViewer from "./components/RedirectViewer/RedirectViewer";
 import RedirectForm from "./components/RedirectForm/RedirectForm";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";

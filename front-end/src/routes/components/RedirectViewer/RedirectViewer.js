@@ -26,7 +26,10 @@ const RedirectViewer = (props) => {
   const [initiateCopy, setInitiateCopy] = useState(false);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(url);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+    }
+
     setInitiateCopy(true);
   };
 
@@ -39,7 +42,11 @@ const RedirectViewer = (props) => {
       <Typography data-testid="linkTypography" className={classes.redirectText}>
         {url || ""}
       </Typography>
-      <IconButton onClick={copyToClipboard} style={{ marginLeft: "16px" }}>
+      <IconButton
+        data-testid="copyIconButton"
+        onClick={copyToClipboard}
+        style={{ marginLeft: "16px" }}
+      >
         <AssignmentIcon />
       </IconButton>
 
