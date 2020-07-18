@@ -28,7 +28,7 @@ describe("Integration Tests", () => {
 
     const linkTypography = getByTestId("linkTypography");
     const { getByText } = within(linkTypography);
-    getByText(/http:\/\/[^\/]+\/[a-zA-Z0-9]{8,}/);
+    getByText(/http:\/\/[^/]+\/[a-zA-Z0-9]{8,}/);
   });
 
   test("Invalid URL", async () => {
