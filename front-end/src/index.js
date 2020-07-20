@@ -17,9 +17,10 @@ ReactDOM.render(
           <Route exact path="/not-found" component={NotFoundPage}></Route>
           <Route
             string
-            path="/:redirect_id([a-zA-Z1-9]{8,})"
+            path="/:redirect_id([a-zA-Z0-9]{8,})"
             component={RedirectComponent}
           ></Route>
+          <Route path="*" component={NotFoundPage} />
         </Switch>
       </div>
     </Router>
