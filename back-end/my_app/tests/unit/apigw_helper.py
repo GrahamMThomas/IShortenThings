@@ -59,7 +59,7 @@ def apigw_get(path="/", url_params={}):
         },
         "body": None,
         "queryStringParameters": url_params,
-        "pathParameters": {"proxy": f"/{path}"},
+        "pathParameters": {"proxy": f"{path}"},
         "httpMethod": "GET",
         "stageVariables": None,
         "path": f"/{path}",
