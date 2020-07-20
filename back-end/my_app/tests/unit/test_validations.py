@@ -1,4 +1,4 @@
-from my_app import validations
+import validations
 
 
 def test_is_url_validator():
