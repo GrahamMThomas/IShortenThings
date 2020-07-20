@@ -9,8 +9,9 @@ from canned_responses import bad_request, NOT_FOUND
 from exception_handler import handle_exceptions
 from cors import add_cors
 from redirect import Redirect, REDIRECT_ID_LEN
+from app_config import dynamodb_hostname
 
-REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url="http://dynamodb:8000").Table("Redirects")
+REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url=dynamodb_hostname()).Table("Redirects")
 
 
 @handle_exceptions

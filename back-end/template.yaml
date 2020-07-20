@@ -5,6 +5,16 @@ Description: >
 
   Sample SAM Template for ishortenthings
 
+Parameters:
+  EnvName:
+    Type: String
+    Default: local
+    AllowedValues:
+      - prod
+      - preprod
+      - dev
+      - test
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -14,7 +24,7 @@ Globals:
       AllowMethods: "'*'"
       AllowHeaders: "'*'"
       AllowOrigin: "'*'"
-      
+
 Resources:
   IShortenThingsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -28,12 +38,15 @@ Resources:
           Properties:
             Path: "/{proxy+}"
             Method: ANY
+      Environment:
+        Variables:
+          EnvName: !Ref EnvName
 
   RedirectTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
       TableName: "Redirects"
-      PrimaryKey: 
+      PrimaryKey:
         Name: "redirect_id"
         Type: "String"
     # Type: AWS::DynamoDB::Table

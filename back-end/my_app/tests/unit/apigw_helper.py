@@ -1,3 +1,6 @@
+import json
+
+
 def apigw_get(path="/", url_params={}):
     """Scaffold for api gateway get request
 
@@ -119,10 +122,10 @@ def apigw_post(path="/", body={}):
             "CloudFront-Forwarded-Proto": "https",
             "Accept-Encoding": "gzip, deflate, sdch",
         },
-        "body": body,
+        "body": json.dumps(body),
         "queryStringParameters": None,
-        "pathParameters": {"proxy": f"/{path}"},
-        "httpMethod": "GET",
+        "pathParameters": {"proxy": f"{path}"},
+        "httpMethod": "POST",
         "stageVariables": None,
         "path": f"/{path}",
     }
