@@ -9,3 +9,4 @@ Todo:
 - Provisioned Concurrency in prod to speed up invocations
 - Add favicon
 - Make mobile responsive
+- CORS config

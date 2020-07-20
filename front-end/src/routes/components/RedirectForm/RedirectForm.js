@@ -45,7 +45,12 @@ const RedirectForm = (props) => {
     setLoading(true);
     CreateRedirect(userUrl)
       .then((res) => {
-        setNewRedirect(window.location.href + res.data.redirect_id);
+        // Had to hardcode because of dns issue
+        setNewRedirect(
+          (process.env.NODE_ENV === "production"
+            ? "https://app.ishortenthings.com/"
+            : window.location.href) + res.data.redirect_id
+        );
         setUserUrl("");
         setLoading(false);
       })
