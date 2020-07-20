@@ -6,15 +6,16 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@material-ui/core";
+import UsesSlider from "../UsesSlider/UsesSlider";
 
 const CustomizeMenu = (props) => {
-  const { setRickRoll } = props;
+  const { setRickRoll, setUsesLeft } = props;
   const [displayRR, setDisplayRR] = useState(false);
 
   return (
     <Paper style={{ marginTop: "16px" }}>
       <Typography variant="overline">Custom Settings</Typography>
-      <FormGroup row style={{ marginLeft: "24px" }}>
+      <FormGroup row style={{ marginLeft: "24px", flexDirection: "column" }}>
         <FormControlLabel
           control={
             <Switch
@@ -29,6 +30,9 @@ const CustomizeMenu = (props) => {
           }
           label="RickRoll (~15% chance)"
         />
+        <div style={{ margin: "16px" }}>
+          <UsesSlider setUsesLeft={setUsesLeft} />
+        </div>
       </FormGroup>
     </Paper>
   );

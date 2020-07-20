@@ -5,11 +5,11 @@ const API_ENDPOINT =
     ? "https://api.ishortenthings.com/"
     : "http://127.0.0.1:3001/";
 
-const CreateRedirect = async (url, canRickRoll) => {
+const CreateRedirect = async (url, usesLeft, canRickRoll) => {
   return await axios({
     method: "post",
     url: API_ENDPOINT + "redirects",
-    data: { url: url, can_rickroll: canRickRoll },
+    data: { url: url, uses_left: usesLeft, can_rickroll: canRickRoll },
   });
 };
 

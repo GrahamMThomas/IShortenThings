@@ -75,9 +75,12 @@ def lambda_handler(event, context):
     if re.match(r"^redirects$", path) and event["httpMethod"] == "POST":
         url = body.get("url")
         can_rickroll = body.get("can_rickroll")
+        uses_left = body.get("uses_left", 10)
 
         if is_url(url):
-            redirect_id = Redirect.create_redirect(REDIRECTS_TABLE, url, can_rickroll=can_rickroll)
+            redirect_id = Redirect.create_redirect(
+                REDIRECTS_TABLE, url, uses_left=uses_left, can_rickroll=can_rickroll
+            )
             return {
                 "statusCode": 200,
                 "body": json.dumps({"redirect_id": redirect_id}),

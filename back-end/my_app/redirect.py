@@ -51,7 +51,7 @@ class Redirect:
         return self.dynamo_table.get_item(Key={"redirect_id": self.redirect_id}).get("Item")
 
     def spend_a_use(self):
-        if self.exists() and self.item.get("uses_left") >= 2:
+        if self.exists() and self.item.get("uses_left") >= 1:
             self.dynamo_table.update_item(
                 Key={"redirect_id": self.redirect_id},
                 UpdateExpression="set uses_left=:x",
@@ -59,7 +59,7 @@ class Redirect:
             )
             self.item["uses_left"] -= 1
 
-        if self.exists() and self.item.get("uses_left") <= 1:
+        elif self.exists() and self.item.get("uses_left") <= 0:
             self.delete()
 
     def delete(self):

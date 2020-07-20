@@ -40,6 +40,7 @@ const RedirectForm = (props) => {
   const [validationError, setValidationError] = useState(null);
 
   const [userUrl, setUserUrl] = useState("");
+  const [usesLeft, setUsesLeft] = useState(10);
   const [canRickRoll, setCanRickRoll] = useState(false);
 
   const handleButtonSubmit = () => {
@@ -47,7 +48,7 @@ const RedirectForm = (props) => {
       return;
     }
     setLoading(true);
-    CreateRedirect(userUrl, canRickRoll)
+    CreateRedirect(userUrl, usesLeft, canRickRoll)
       .then((res) => {
         // Had to hardcode because of dns issue
         setNewRedirect(
@@ -99,7 +100,9 @@ const RedirectForm = (props) => {
           <SettingsIcon style={{ color: "#FFF72B" }} />
         </Button>
       </div>
-      {settingsOpen ? <CustomizeMenu setRickRoll={setCanRickRoll} /> : null}
+      {settingsOpen ? (
+        <CustomizeMenu setRickRoll={setCanRickRoll} setUsesLeft={setUsesLeft} />
+      ) : null}
 
       <div
         className={classes.center}
