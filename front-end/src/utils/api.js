@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "https://api.ishortenthings.com"
+    ? "https://api.ishortenthings.com/"
     : "http://127.0.0.1:3001/";
 
 const CreateRedirect = async (url) => {
