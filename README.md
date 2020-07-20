@@ -8,3 +8,4 @@ Todo:
 - Add check for hashing collision
 - Provisioned Concurrency in prod to speed up invocations
 - Add favicon
+- Make mobile responsive
