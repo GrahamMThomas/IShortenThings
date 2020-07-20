@@ -34,16 +34,20 @@ const styles = (theme) => ({
 
 const RedirectForm = (props) => {
   const { classes, setNewRedirect, setError } = props;
-  const [userUrl, setUserUrl] = useState("");
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState(null);
+
+  const [userUrl, setUserUrl] = useState("");
+  const [canRickRoll, setCanRickRoll] = useState(false);
 
   const handleButtonSubmit = () => {
     if (!checkIfValidInput(userUrl)) {
       return;
     }
     setLoading(true);
-    CreateRedirect(userUrl)
+    CreateRedirect(userUrl, canRickRoll)
       .then((res) => {
         // Had to hardcode because of dns issue
         setNewRedirect(
@@ -87,12 +91,15 @@ const RedirectForm = (props) => {
           value={userUrl}
           inputProps={{ "data-testid": "urlTextField" }}
         />
-        <Button variant="contained" className={classes.settingsButton}>
+        <Button
+          variant="contained"
+          className={classes.settingsButton}
+          onClick={() => setSettingsOpen(!settingsOpen)}
+        >
           <SettingsIcon style={{ color: "#FFF72B" }} />
         </Button>
       </div>
-
-      <CustomizeMenu />
+      {settingsOpen ? <CustomizeMenu setRickRoll={setCanRickRoll} /> : null}
 
       <div
         className={classes.center}

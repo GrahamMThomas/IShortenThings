@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { useCookies } from "react-cookie";
 import RedirectViewer from "./components/RedirectViewer/RedirectViewer";
 import RedirectForm from "./components/RedirectForm/RedirectForm";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -16,10 +17,27 @@ const styles = (theme) => ({
   },
 });
 
+// https://stackoverflow.com/questions/105034/how-to-create-guid-uuid
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 const App = (props) => {
   const { classes } = props;
+  const [cookies, setCookie] = useCookies(["ishortenthings"]);
   const [newRedirect, setNewRedirect] = useState(null);
   const [error, setError] = useState(null);
+
+  // Set Cookie on First Visit
+  useEffect(() => {
+    if (typeof cookies.visitorId == "undefined") {
+      setCookie("visitorId", uuidv4());
+    }
+  });
 
   const handleErrorClose = () => {
     setError(null);

@@ -49,4 +49,3 @@ class TestSpendUse:
 
         # Check Dynamo updated
         assert Redirect(REDIRECTS_TABLE, self.redirect_id).item.get("uses_left") == 9
-

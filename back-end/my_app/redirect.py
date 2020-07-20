@@ -12,9 +12,7 @@ class Redirect:
         self.item = self.get_dynamo_entry()
 
     @classmethod
-    def create_redirect(
-        cls, dynamo_table, url, uses_left=10, user_token="None", can_rickroll=False
-    ):
+    def create_redirect(cls, dynamo_table, url, uses_left=10, can_rickroll=False):
         """Creates a redirect entry
 
         Args:
@@ -31,7 +29,6 @@ class Redirect:
             Item={
                 "redirect_id": redirect_id,
                 "uses_left": uses_left,
-                "user_token": user_token,
                 "can_rickroll": can_rickroll,
                 "url": url,
             }

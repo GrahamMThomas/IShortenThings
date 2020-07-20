@@ -4,13 +4,13 @@ Todo:
 
 - CI/CD Pipeline
 - Allow % change for rickroll
-- Once you get rickrolled you can't undo it. (Persistant cookie or something)
 - Add check for hashing collision
 - Provisioned Concurrency in prod to speed up invocations
-- Add favicon
 - Make mobile responsive
 - CORS config
 - Api Authorization
-- Add rickroll feature
 - Add custom uses feature
 - Add password protected redirect
+- PropTypes
+- FindDomNode error
+- fix clipboard bug where it closes if you press again
