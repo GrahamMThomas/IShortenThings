@@ -45,7 +45,6 @@ def lambda_handler(event, context):
 
     # https://github.com/awslabs/aws-sam-cli/issues/1860
     event["headers"].update({name.lower(): value for name, value in event["headers"].items()})
-
     headers = event.get("headers")
 
     # GET /redirects/<Alphanumeric>
