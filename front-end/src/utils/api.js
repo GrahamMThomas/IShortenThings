@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_ENDPOINT =
-  process.env.EnvName === "prod"
+  process.env.NODE_ENV === "production"
     ? "https://api.ishortenthings.com"
     : "http://127.0.0.1:3001/";
 

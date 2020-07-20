@@ -1,7 +1,7 @@
 import React from "react";
 
 const CustomizeMenu = () => {
-  return process.env.EnvName;
+  return null;
 };
 
 export default CustomizeMenu;
