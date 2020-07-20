@@ -8,7 +8,7 @@ Description: >
 Parameters:
   EnvName:
     Type: String
-    Default: local
+    Default: dev
     AllowedValues:
       - prod
       - preprod
@@ -26,6 +26,13 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  IShortenThingsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: AWS_IAM
+
   IShortenThingsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -36,6 +43,7 @@ Resources:
         IShortenThings:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
+            RestApiId: !Ref IShortenThingsApi
             Path: "/{proxy+}"
             Method: ANY
       Environment:
@@ -72,7 +80,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   IShortenThingsApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "https://${IShortenThingsApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   IShortenThingsFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt IShortenThingsFunction.Arn
