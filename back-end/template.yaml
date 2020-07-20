@@ -49,6 +49,18 @@ Resources:
       Environment:
         Variables:
           EnvName: !Ref EnvName
+      Policies:
+        - Version: "2012-10-17" # Policy Document
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DeleteItem
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:UpdateItem
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RedirectTable}"
 
   RedirectTable:
     Type: AWS::Serverless::SimpleTable
