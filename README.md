@@ -10,3 +10,7 @@ Todo:
 - Add favicon
 - Make mobile responsive
 - CORS config
+- Api Authorization
+- Add rickroll feature
+- Add custom uses feature
+- Add password protected redirect
