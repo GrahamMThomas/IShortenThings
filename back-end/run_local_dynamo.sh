@@ -1,1 +1,1 @@
-docker run dynamodb
+docker start dynamodb
