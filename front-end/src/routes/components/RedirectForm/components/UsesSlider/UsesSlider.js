@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 export default function UsesSlider(props) {
   const classes = useStyles();
   const { setUsesLeft } = props;
-  const [value, setValue] = React.useState(30);
+  const [value, setValue] = React.useState(10);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
