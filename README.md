@@ -9,7 +9,6 @@ Todo:
 - Make mobile responsive
 - CORS config
 - Api Authorization
-- Add custom uses feature
 - Add password protected redirect
 - PropTypes
 - FindDomNode error
