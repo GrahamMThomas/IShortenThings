@@ -16,9 +16,9 @@ class Redirect:
         """Creates a redirect entry
 
         Args:
+            dynamo_table (boto3.dynamodb.table): Table to add redirect to
             url (string): url to redirect to
             uses_left (int, optional): How many uses remaining on redirect. Defaults to 10.
-            user_token (str, optional): Which users owns this redirect. Defaults to "None".
             can_rickroll (bool, optional): Does this redirect have a chance to rickroll you? Defaults to False.
 
         Returns:

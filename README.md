@@ -13,7 +13,7 @@ To access the app, go to https://app.ishortenthings.com:
 
 ![architecture diagram](docs/images/architecture_diagram.jpg)
 
-#### Todo List
+## Todo List
 
 - CI/CD Pipeline (Test in pipeline)
   - PR Environments

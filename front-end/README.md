@@ -1,3 +1,9 @@
+<img src="../docs/images/minion-short.png" align="right" height="144px" />
+
+# I Shorten Things Front End&nbsp; [![guide](https://img.shields.io/badge/Link-https%3A%2F%2Fapp.ishortenthings.com-blue)](https://app.ishortenthings.com)
+
+> "I Shorten Things" is a bit.ly clone I used to practice building a full stack application from the ground up.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

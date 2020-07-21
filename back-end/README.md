@@ -1,10 +1,20 @@
 <img src="../docs/images/minion-short.png" align="right" height="144px" />
 
-# I Shorten Things &nbsp; [![guide](https://img.shields.io/badge/Link-https%3A%2F%2Fapp.ishortenthings.com-blue)](https://app.ishortenthings.com)
+# I Shorten Things Back End &nbsp; [![guide](https://img.shields.io/badge/Link-https%3A%2F%2Fapp.ishortenthings.com-blue)](https://app.ishortenthings.com)
 
 > "I Shorten Things" is a bit.ly clone I used to practice building a full stack application from the ground up.
 
 This project was bootstrapped with [SAM CLI Init](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html).
+
+## Current Data Model
+
+Dynamo "Redirects" Table
+| Key | Value |
+| :---: | :---: |
+| redirect_id | int |
+| uses_left | int |
+| can_rickroll | bool |
+| url | string |
 
 ## Local Development
 
