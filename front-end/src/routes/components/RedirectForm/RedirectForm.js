@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Paper, TextField, Button } from "@material-ui/core";
+import { Button, Paper, TextField, CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import SettingsIcon from "@material-ui/icons/Settings";
+
 import { CreateRedirect } from "../../../utils/api";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { validURL } from "./validations";
 import CustomizeMenu from "./components/CustomizeMenu/CustomizeMenu";
+import { validURL } from "./validations";
 
 const styles = (theme) => ({
   title: {
@@ -81,6 +81,7 @@ const RedirectForm = (props) => {
   return (
     // TODO Potentially split into multiple components
     <Paper className={classes.formPaper}>
+      {/* Form Input */}
       <div className={classes.center} style={{ marginLeft: "24px" }}>
         <TextField
           error={validationError !== null}
@@ -100,10 +101,13 @@ const RedirectForm = (props) => {
           <SettingsIcon style={{ color: "#FFF72B" }} />
         </Button>
       </div>
+
+      {/* Customize Button */}
       {settingsOpen ? (
         <CustomizeMenu setRickRoll={setCanRickRoll} setUsesLeft={setUsesLeft} />
       ) : null}
 
+      {/* Submit Button */}
       <div
         className={classes.center}
         style={{ marginTop: "32px", marginLeft: "64px" }}
