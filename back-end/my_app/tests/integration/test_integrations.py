@@ -3,7 +3,7 @@ import json
 import pytest
 
 import app
-from tests.unit.apigw_helper import apigw_get, apigw_post
+from tests.helpers.apigw import apigw_get, apigw_post
 
 from redirect import Redirect
 
@@ -14,9 +14,12 @@ def test_not_found():
 
 
 class TestCreateRedirect:
+    def setup(self):
+        self.redirect_ids = []
+
     def teardown(self):
-        if self.redirect_id:
-            Redirect(app.REDIRECTS_TABLE, self.redirect_id).delete()
+        for rid in self.redirect_ids:
+            Redirect(app.REDIRECTS_TABLE, rid).delete()
 
     def test_redirect_create(self):
         request = apigw_post("redirects", body={"url": "https://google.com"})
@@ -25,11 +28,29 @@ class TestCreateRedirect:
         assert res.get("statusCode") == 200
 
         redirect_id = json.loads(res.get("body", "{}")).get("redirect_id", None)
-        self.redirect_id = redirect_id
+        self.redirect_ids.append(redirect_id)
         assert redirect_id is not None
 
         redirect_entry = Redirect(app.REDIRECTS_TABLE, redirect_id)
         assert redirect_entry.exists()
+
+    def test_redirect_create_full_params(self):
+        request = apigw_post(
+            "redirects", body={"uses_left": 7, "can_rickroll": True, "url": "https://google.com"}
+        )
+        res = app.lambda_handler(request, "")
+
+        assert res.get("statusCode") == 200
+
+        redirect_id = json.loads(res.get("body", "{}")).get("redirect_id", None)
+        self.redirect_ids.append(redirect_id)
+        assert redirect_id is not None
+
+        redirect_entry = Redirect(app.REDIRECTS_TABLE, redirect_id)
+        assert redirect_entry.exists()
+        assert redirect_entry.item.get("uses_left") == 7
+        assert redirect_entry.item.get("can_rickroll")
+        assert redirect_entry.item.get("url") == "https://google.com"
 
 
 class TestRetrieveRedirect:

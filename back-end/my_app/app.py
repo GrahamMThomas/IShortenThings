@@ -1,16 +1,16 @@
 import json
-import simplejson
 import random
-
-import boto3
 import re
 
-from validations import is_url
-from canned_responses import bad_request, NOT_FOUND
-from exception_handler import handle_exceptions
-from cors import add_cors
-from redirect import Redirect, REDIRECT_ID_LEN
-from app_config import dynamodb_hostname
+import boto3
+import simplejson
+
+from redirect import REDIRECT_ID_LEN, Redirect
+from utils.app_config import dynamodb_hostname
+from utils.canned_responses import NOT_FOUND, bad_request
+from utils.cors import add_cors
+from utils.exception_handler import handle_exceptions
+from utils.validations import is_url
 
 REDIRECTS_TABLE = boto3.resource("dynamodb", endpoint_url=dynamodb_hostname()).Table("Redirects")
 RICKROLL_CHANCE = 15
@@ -89,4 +89,3 @@ def lambda_handler(event, context):
             return bad_request(["url"])
 
     return NOT_FOUND
-
