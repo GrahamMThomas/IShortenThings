@@ -7,10 +7,12 @@ def add_cors(func):
         allowed_domains = [
             "https://master.d2t1c4oka9hdou.amplifyapp.com",
             "https://app.ishortenthings.com",
-            "http://localhost:3000",
+            "http://localhost:3000",  # Local
+            "http://localhost",  # Test
         ]
 
         origin = args[0].get("headers", {}).get("Origin")
+        print(origin)
         output = func(*args, **kwargs)
         if not output.get("headers"):
             output["headers"] = {}
