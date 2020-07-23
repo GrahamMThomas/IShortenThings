@@ -15,13 +15,12 @@ To access the app, go to https://app.ishortenthings.com:
 
 ## Todo List
 
-- CI/CD Pipeline (Test in pipeline)
-  - PR Environments
+- PR Environments
+- Preprod Env
 - Adjust % chance to rick roll
 - Add check for hashing collision
 - Provisioned Concurrency in prod to speed up invocations
 - Make mobile responsive
-- CORS config
 - Api Authorization
 - Add password protected redirect
 - PropTypes
