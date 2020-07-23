@@ -12,7 +12,6 @@ def add_cors(func):
         ]
 
         origin = args[0].get("headers", {}).get("Origin")
-        print(origin)
         output = func(*args, **kwargs)
         if not output.get("headers"):
             output["headers"] = {}
