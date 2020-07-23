@@ -56,6 +56,13 @@ def lambda_handler(event, context):
         if not requested_redirect.exists():
             return NOT_FOUND
 
+        if requested_redirect.is_password_protected():
+            if query_params.get("pass", None) != requested_redirect.password:
+                return {
+                    "statusCode": 401,
+                    "body": json.dumps({"message": "This direct requires a pass query parameter"}),
+                }
+
         if query_params.get("use") == "true":
             requested_redirect.spend_a_use()
 
@@ -76,10 +83,15 @@ def lambda_handler(event, context):
         url = body.get("url")
         can_rickroll = body.get("can_rickroll")
         uses_left = body.get("uses_left", 10)
+        password = body.get("password")
 
         if is_url(url):
             redirect_id = Redirect.create_redirect(
-                REDIRECTS_TABLE, url, uses_left=uses_left, can_rickroll=can_rickroll
+                REDIRECTS_TABLE,
+                url,
+                uses_left=uses_left,
+                can_rickroll=can_rickroll,
+                password=password,
             )
             return {
                 "statusCode": 200,

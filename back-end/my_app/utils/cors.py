@@ -1,6 +1,7 @@
 import traceback
 import json
 import logging
+import os
 
 
 def add_cors(func):
@@ -12,7 +13,13 @@ def add_cors(func):
             "http://localhost",  # Test
         ]
 
-        origin = args[0].get("headers", {}).get("Origin")
+        # https://github.com/awslabs/aws-sam-cli/issues/1860
+        origin = None
+        if os.environ.get("EnvName", "test") in ["preprod", "prod"]:
+            origin = args[0].get("headers", {}).get("origin")
+        else:
+            origin = args[0].get("headers", {}).get("Origin")
+
         output = func(*args, **kwargs)
         if not output.get("headers"):
             output["headers"] = {}

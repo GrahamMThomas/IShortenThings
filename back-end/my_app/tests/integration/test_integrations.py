@@ -36,7 +36,13 @@ class TestCreateRedirect:
 
     def test_redirect_create_full_params(self):
         request = apigw_post(
-            "redirects", body={"uses_left": 7, "can_rickroll": True, "url": "https://google.com"}
+            "redirects",
+            body={
+                "uses_left": 7,
+                "can_rickroll": True,
+                "url": "https://google.com",
+                "password": "SneakyPass",
+            },
         )
         res = app.lambda_handler(request, "")
 
@@ -51,6 +57,7 @@ class TestCreateRedirect:
         assert redirect_entry.item.get("uses_left") == 7
         assert redirect_entry.item.get("can_rickroll")
         assert redirect_entry.item.get("url") == "https://google.com"
+        assert redirect_entry.password == "SneakyPass"
 
 
 class TestRetrieveRedirect:

@@ -9,10 +9,11 @@ class Redirect:
     def __init__(self, dynamo_table, redirect_id):
         self.dynamo_table = dynamo_table
         self.redirect_id = redirect_id
+        self.password = None
         self.item = self.get_dynamo_entry()
 
     @classmethod
-    def create_redirect(cls, dynamo_table, url, uses_left=10, can_rickroll=False):
+    def create_redirect(cls, dynamo_table, url, uses_left=10, can_rickroll=False, password=None):
         """Creates a redirect entry
 
         Args:
@@ -31,6 +32,7 @@ class Redirect:
                 "uses_left": uses_left,
                 "can_rickroll": can_rickroll,
                 "url": url,
+                "password": password,
             }
         )
         return redirect_id
@@ -44,11 +46,23 @@ class Redirect:
     def exists(self):
         return not self.item is None
 
+    def is_password_protected(self):
+        return not self.password is None
+
     def to_json(self):
         return simplejson.dumps(self.item)
 
     def get_dynamo_entry(self):
-        return self.dynamo_table.get_item(Key={"redirect_id": self.redirect_id}).get("Item")
+        """Pulls dynamo item from the table and saves it to instance var. Also sets Password.
+
+        Returns:
+            dict: item attributes related to redirect_id (excluding "password")
+        """
+        # TODO Single responsibility. Set password somewhere else
+        item = self.dynamo_table.get_item(Key={"redirect_id": self.redirect_id}).get("Item")
+        if item:
+            self.password = item.pop("password", None)
+        return item
 
     def spend_a_use(self):
         if self.exists() and self.item.get("uses_left") >= 1:
