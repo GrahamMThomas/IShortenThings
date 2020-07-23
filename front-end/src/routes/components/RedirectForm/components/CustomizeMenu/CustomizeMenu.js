@@ -19,6 +19,7 @@ const CustomizeMenu = (props) => {
         <FormControlLabel
           control={
             <Switch
+              inputProps={{ "data-testid": "rickRollSwitch" }}
               checked={displayRR}
               onChange={(e) => {
                 setDisplayRR(e.target.checked);

@@ -48,6 +48,7 @@ export default function UsesSlider(props) {
             value={typeof value === "number" ? value : 1}
             onChange={handleSliderChange}
             min={1}
+            data-testid="usesSlider"
           />
         </Grid>
         <Grid item>
