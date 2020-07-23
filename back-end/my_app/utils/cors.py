@@ -1,5 +1,6 @@
 import traceback
 import json
+import logging
 
 
 def add_cors(func):
@@ -19,6 +20,7 @@ def add_cors(func):
             output["headers"]["Access-Control-Allow-Origin"] = origin
         else:
             output["headers"]["Access-Control-Allow-Origin"] = None
+            logging.error(f"CORS error detected. Origin: {origin}")
 
         output["headers"]["Access-Control-Allow-Methods"] = "POST,GET,OPTIONS"
         output["headers"]["Access-Control-Allow-Headers"] = "*"
