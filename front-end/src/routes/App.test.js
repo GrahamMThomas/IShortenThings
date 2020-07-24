@@ -6,7 +6,7 @@ import {
   waitForDomChange,
 } from "@testing-library/react";
 import { within } from "@testing-library/dom";
-import App from "./routes/App";
+import App from "./App";
 import "@testing-library/jest-dom/extend-expect";
 
 afterEach(cleanup);
