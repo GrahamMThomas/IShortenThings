@@ -9,11 +9,22 @@ import {
   Grid,
 } from "@material-ui/core";
 import UsesSlider from "../UsesSlider/UsesSlider";
+import { validPassword } from "./validations";
 
 const CustomizeMenu = (props) => {
   const { setRickRoll, setUsesLeft, setPassword } = props;
   const [displayRR, setDisplayRR] = useState(false);
   const [usePassword, setUsePassword] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(null);
+
+  const handlePasswordChange = (value) => {
+    if (validPassword(value)) {
+      setPasswordValidation(null);
+    } else {
+      setPasswordValidation("Invalid password.");
+    }
+    setPassword(value);
+  };
 
   return (
     <Paper>
@@ -53,7 +64,9 @@ const CustomizeMenu = (props) => {
             inputProps={{ "data-testid": "passwordTextField" }}
             disabled={!usePassword}
             label="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            error={passwordValidation}
+            helperText={passwordValidation || "Letters and Numbers only"}
+            onChange={(e) => handlePasswordChange(e.target.value)}
           />
         </Grid>
         <Grid item style={{ display: "flex" }}>
