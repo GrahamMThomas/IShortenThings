@@ -64,7 +64,7 @@ const PasswordEntry = (props) => {
         error={badPassword}
         helperText={
           badPassword
-            ? `Password Invalid. ${triesLeft} tries left.`
+            ? `Password Incorrect. ${triesLeft} tries left.`
             : "Letters and numbers only"
         }
       />
