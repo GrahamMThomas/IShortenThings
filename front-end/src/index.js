@@ -5,6 +5,7 @@ import "./index.css";
 import NotFoundPage from "./routes/404";
 import App from "./routes/App";
 import RedirectComponent from "./routes/Redirect";
+import PasswordEntry from "./routes/PasswordEntry";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,11 @@ ReactDOM.render(
             string
             path="/:redirect_id([a-zA-Z0-9]{8,})"
             component={RedirectComponent}
+          ></Route>
+          <Route
+            string
+            path="/enter-password/:redirect_id([a-zA-Z0-9]{8,})"
+            component={PasswordEntry}
           ></Route>
           <Route path="*" component={NotFoundPage} />
         </Switch>

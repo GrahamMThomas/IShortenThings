@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { UseRedirect } from "../utils/api";
 import { useCookies } from "react-cookie";
+import { Container, CircularProgress } from "@material-ui/core";
 
 const RedirectComponent = (props) => {
-  const [result, setResult] = useState("Loading....");
   const [cookies] = useCookies(["ishortenthings"]);
 
   useEffect(() => {
@@ -17,10 +17,30 @@ const RedirectComponent = (props) => {
           props.history.push("/not-found");
         }
       })
-      .catch(() => props.history.push("/not-found"));
+      .catch((e) => {
+        if (e.response.status === 401) {
+          props.history.push(
+            `enter-password/${props.match.params.redirect_id}`
+          );
+        } else {
+          props.history.push("/not-found");
+        }
+      });
   });
 
-  return result;
+  return (
+    <Container
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <CircularProgress />
+    </Container>
+  );
 };
 
 export default RedirectComponent;

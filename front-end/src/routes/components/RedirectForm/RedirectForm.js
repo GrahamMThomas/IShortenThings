@@ -33,7 +33,7 @@ const styles = (theme) => ({
 });
 
 const RedirectForm = (props) => {
-  const { classes, setNewRedirect, setError } = props;
+  const { classes, setNewRedirect, setError, apiTestFn } = props;
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,13 +42,19 @@ const RedirectForm = (props) => {
   const [userUrl, setUserUrl] = useState("");
   const [usesLeft, setUsesLeft] = useState(10);
   const [canRickRoll, setCanRickRoll] = useState(false);
+  const [password, setPassword] = useState("");
 
   const handleButtonSubmit = () => {
     if (!checkIfValidInput(userUrl)) {
       return;
     }
     setLoading(true);
-    CreateRedirect(userUrl, usesLeft, canRickRoll)
+
+    if (process.env.NODE_ENV === "test" && typeof apiTestFn === "function") {
+      apiTestFn(userUrl, usesLeft, canRickRoll, password);
+    }
+
+    CreateRedirect(userUrl, usesLeft, canRickRoll, password)
       .then((res) => {
         // Had to hardcode because of dns issue
         setNewRedirect(
@@ -96,6 +102,7 @@ const RedirectForm = (props) => {
         <Button
           variant="contained"
           className={classes.settingsButton}
+          data-testid="customSettingsButton"
           onClick={() => setSettingsOpen(!settingsOpen)}
         >
           <SettingsIcon style={{ color: "#FFF72B" }} />
@@ -104,7 +111,11 @@ const RedirectForm = (props) => {
 
       {/* Customize Button */}
       {settingsOpen ? (
-        <CustomizeMenu setRickRoll={setCanRickRoll} setUsesLeft={setUsesLeft} />
+        <CustomizeMenu
+          setRickRoll={setCanRickRoll}
+          setUsesLeft={setUsesLeft}
+          setPassword={setPassword}
+        />
       ) : null}
 
       {/* Submit Button */}

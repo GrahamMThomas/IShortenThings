@@ -39,7 +39,7 @@ export default function UsesSlider(props) {
 
   return (
     <div className={classes.root}>
-      <Typography id="input-slider" gutterBottom>
+      <Typography id="input-slider" gutterBottom style={{ textAlign: "left" }}>
         Use limit
       </Typography>
       <Grid container spacing={2} alignItems="center">
@@ -48,7 +48,6 @@ export default function UsesSlider(props) {
             value={typeof value === "number" ? value : 1}
             onChange={handleSliderChange}
             min={1}
-            data-testid="usesSlider"
           />
         </Grid>
         <Grid item>
@@ -63,6 +62,7 @@ export default function UsesSlider(props) {
               min: 1,
               max: 100,
               type: "number",
+              "data-testid": "usesInput",
             }}
           />
         </Grid>
