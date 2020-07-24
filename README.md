@@ -26,3 +26,5 @@ To access the app, go to https://app.ishortenthings.com:
 - PropTypes
 - FindDomNode error
   - Occurs when using clipboard button
+- Use cookie to limit number of uses per minute
+- Add user to blacklist if they screw up password too many times
