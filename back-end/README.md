@@ -15,6 +15,7 @@ Dynamo "Redirects" Table
 | uses_left | int |
 | can_rickroll | bool |
 | url | string |
+| password | string |
 
 ## Local Development
 
