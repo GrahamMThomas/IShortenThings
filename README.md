@@ -15,6 +15,7 @@ To access the app, go to https://app.ishortenthings.com:
 
 ## Todo List
 
+- Implement MemCache for redirects
 - PR Environments
 - Preprod Env
 - Adjust % chance to rick roll
