@@ -6,9 +6,6 @@
 
 To access the app, go to https://app.ishortenthings.com:
 
-- user: _user_
-- pass: _V3KqAcONgT52!23_
-
 ## Service Architecture
 
 ![architecture diagram](docs/images/architecture_diagram.jpg)
